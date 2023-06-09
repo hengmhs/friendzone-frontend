@@ -11,6 +11,7 @@ import Table from "../Table/Table";
 import { groupingColumns } from "../Table/columns";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import generateGroupings from "../../groupings/groupingFunction";
 
 //------------------------------//
 
@@ -28,9 +29,10 @@ const ParticipantsGroups = ({
   const [tableData, setTableData] = useState([]);
 
   useEffect(() => {
-    setFilteredData(
-      data.filter((participant) => Number(participant.statusId) === 5)
+    const confirmedParticipants = data.filter(
+      (participant) => Number(participant.statusId) === 5
     );
+    setFilteredData(confirmedParticipants);
     //eslint-disable-next-line
   }, []);
 
@@ -80,6 +82,20 @@ const ParticipantsGroups = ({
     setGroupData((prevGroups) => [...prevGroups, ...response.data.data]);
   };
 
+  const createGroupings = (filteredData, groupData) => {
+    setFilteredData(generateGroupings(filteredData, groupData));
+  };
+
+  const saveGroupings = async (filteredData) => {
+    const response = await axios.put(
+      `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/bulk/participants`,
+      {
+        participantArray: filteredData,
+      }
+    );
+    console.log("Posted: ", response);
+  };
+
   return (
     <>
       <div className="header">
@@ -88,8 +104,14 @@ const ParticipantsGroups = ({
           <button onClick={addGroup} id="groups">
             <h5>Add Group</h5>
           </button>
-          <button id="participants">
+          <button
+            onClick={() => createGroupings(filteredData, groupData.length)}
+            id="participants"
+          >
             <h5>Generate</h5>
+          </button>
+          <button onClick={() => saveGroupings(filteredData)} id="participants">
+            <h5>Save Groupings</h5>
           </button>
         </div>
       </div>
