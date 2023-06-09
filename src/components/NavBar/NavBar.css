@@ -4,7 +4,6 @@
   top: 0;
   width: 100%;
   background-image: url("../../../public/images/fz_gradient_main.jpg");
-  background-size: cover;
   background-color: black;
   height: 60px;
   padding: 20px;
@@ -22,5 +21,11 @@
 #nav-links button {
   color: white;
   background-color: rgba(0, 0, 0, 0);
+  border: none;
+}
+
+#nav-links #logout {
+  color: white;
+  background-color: rgba(0, 0, 0);
   border: none;
 }

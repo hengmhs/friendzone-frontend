@@ -13,6 +13,7 @@ import EventButton from "../../../components/Buttons/EventButton";
 
 import axios from "axios";
 import "./EventsHome.css";
+// import { useAuth0 } from "@auth0/auth0-react";
 
 //------------------------------//
 
@@ -21,6 +22,11 @@ const EventsHome = () => {
   const navigate = useNavigate();
   const [toggleComposer, setToggleComposer] = useState(false);
   const [data, setData] = useState(null);
+  // const { isAuthenticated } = useAuth0();
+
+  // useEffect(() => {
+  //   console.log(isAuthenticated);
+  // }, [isAuthenticated]);
 
   useEffect(() => {
     const getTableData = async () => {

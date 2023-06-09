@@ -1,6 +1,6 @@
 //----------- React -----------//
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 //---------- Pages ----------//
@@ -10,21 +10,26 @@ import EventPage from "./pages/Events/EventPage/EventPage";
 import Participants from "./pages/Participants/Participants";
 import Facilitators from "./pages/Facilitators/Facilitators";
 import Login from "./pages/Login/Login";
-import Signup from "./pages/Signup/Signup";
 
 //---------- Others ----------//
 
+import { useAuth0 } from "@auth0/auth0-react";
 import "./App.css";
 
 //------------------------------//
 
 const App = () => {
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+
+  useEffect(() => {
+    console.log("App.js: ", isAuthenticated);
+  }, [isAuthenticated]);
+
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Navigate to="/events" />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/events">
           <Route index element={<EventsHome />} />
           <Route path=":eventId" element={<EventPage />} />

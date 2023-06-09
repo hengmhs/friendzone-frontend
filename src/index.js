@@ -7,12 +7,13 @@ import "./index.css";
 import "./fonts/satoshi.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <Auth0Provider
-    domain={process.env.REACT_APP_AUTH_DOMAIN}
-    clientId={process.env.REACT_APP_AUTH_CLIENT_ID}
+    domain="dev-uki2t68i2ph0pfv6.us.auth0.com"
+    clientId="6yvACJbVtutMuMiP1Nt3qSW3FThr8ujo"
     authorizationParams={{ redirect_uri: window.location.origin }}
-    audience={process.env.REACT_APP_AUTH_AUDIENCE}
+    audience="https://test/api"
   >
     <BrowserRouter>
       <App />
