@@ -84,7 +84,12 @@ const EventsHome = () => {
 
     return (
       <div className="contents">
-        {toggleComposer && <EventComposer handleToggle={handleToggle} />}
+        {toggleComposer && (
+          <EventComposer
+            handleToggle={handleToggle}
+            accessToken={accessToken}
+          />
+        )}
         <NavBar />
         <div className="header">
           <h1>Events Home</h1>

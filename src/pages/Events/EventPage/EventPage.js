@@ -150,7 +150,11 @@ const EventPage = () => {
   return (
     <div className="contents" id="event-page">
       {toggleComposer && (
-        <ParticipantAdder handleToggle={handleToggle} eventId={eventId} />
+        <ParticipantAdder
+          handleToggle={handleToggle}
+          eventId={eventId}
+          accessToken={accessToken}
+        />
       )}
       <NavBar />
       <button onClick={handleClick} id="back">

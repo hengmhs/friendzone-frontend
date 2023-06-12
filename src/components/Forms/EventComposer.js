@@ -4,7 +4,7 @@ import { parse } from "papaparse";
 import "axios";
 import axios from "axios";
 
-const EventComposer = ({ handleToggle }) => {
+const EventComposer = ({ handleToggle, accessToken }) => {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [type, setType] = useState("");
@@ -26,7 +26,12 @@ const EventComposer = ({ handleToggle }) => {
       };
       const event = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/events`,
-        eventJSON
+        eventJSON,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       console.log("posted event: ", event);
       console.log("eventJSON posted to backend");
@@ -84,7 +89,12 @@ const EventComposer = ({ handleToggle }) => {
 
             const response = await axios.post(
               `${process.env.REACT_APP_BACKEND_URL}/participants`,
-              { eventId: event.data.content.id, participantJSON }
+              { eventId: event.data.content.id, participantJSON },
+              {
+                headers: {
+                  Authorization: `Bearer ${accessToken}`,
+                },
+              }
             );
             console.log(response);
             console.log("Posted to backend");

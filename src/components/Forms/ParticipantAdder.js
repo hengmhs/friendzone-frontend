@@ -3,7 +3,7 @@ import { useState } from "react";
 import { parse } from "papaparse";
 import axios from "axios";
 
-const ParticipantAdder = ({ handleToggle, eventId }) => {
+const ParticipantAdder = ({ handleToggle, eventId, accessToken }) => {
   const [csv, setCsv] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -62,7 +62,12 @@ const ParticipantAdder = ({ handleToggle, eventId }) => {
 
           const response = await axios.post(
             `${process.env.REACT_APP_BACKEND_URL}/participants`,
-            { eventId, participantJSON }
+            { eventId, participantJSON },
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
           );
           console.log(response);
           console.log("Posted to backend");
