@@ -36,6 +36,7 @@ const Table = ({
   setGroupData,
   facilData,
   setEditsButton,
+  accessToken,
 }) => {
   const [columnsState, setColumnsState] = useState([]);
 
@@ -54,9 +55,18 @@ const Table = ({
       options === "status" ||
       (options === "attendance" && columnName === "Attended")
     ) {
+      console.log("accessToken: ", accessToken);
       await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/participants`,
-        { participantId, [updatedId]: e.value }
+        {
+          participantId,
+          [updatedId]: e.value,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
     } else {
       setEditsButton(true);

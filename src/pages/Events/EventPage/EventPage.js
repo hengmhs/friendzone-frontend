@@ -163,6 +163,7 @@ const EventPage = () => {
           eventData={eventData}
           handleToggle={handleToggle}
           toggleTab={toggleTab}
+          accessToken={accessToken}
         />
       ) : (
         <ParticipantsGroups
@@ -174,6 +175,7 @@ const EventPage = () => {
           groupData={groupData}
           setGroupData={setGroupData}
           facilData={facilData}
+          accessToken={accessToken}
         />
       )}
     </div>

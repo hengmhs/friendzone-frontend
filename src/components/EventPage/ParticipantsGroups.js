@@ -22,6 +22,7 @@ const ParticipantsGroups = ({
   groupData,
   setGroupData,
   facilData,
+  accessToken,
 }) => {
   const { eventId } = useParams();
   const [filteredData, setFilteredData] = useState([]);
@@ -157,6 +158,7 @@ const ParticipantsGroups = ({
           setGroupData={setGroupData}
           facilData={facilData}
           setEditsButton={setEditsButton}
+          accessToken={accessToken}
         />
       )}
     </>
