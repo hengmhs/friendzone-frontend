@@ -78,6 +78,11 @@ const ParticipantsGroups = ({
             facilitatorId: 1,
           },
         ],
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
     );
     setGroupData((prevGroups) => [...prevGroups, ...response.data.data]);
@@ -89,7 +94,12 @@ const ParticipantsGroups = ({
     console.log(deletedGroup);
     setGroupData([...allGroups]);
     const response = await axios.delete(
-      `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}/${deletedGroup.id}`
+      `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}/${deletedGroup.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     console.log(response);
   };
@@ -104,6 +114,11 @@ const ParticipantsGroups = ({
       `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/bulk/participants`,
       {
         participantArray: filteredData,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }
     );
     console.log("Posted: ", response);
