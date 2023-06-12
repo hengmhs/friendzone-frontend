@@ -98,7 +98,12 @@ const Table = ({
     tempData[targetIndex].facilitatorId = e.value;
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}`,
-      { groupArray: tempData }
+      { groupArray: tempData },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
     );
     setGroupData(response.data.data);
   };
