@@ -5,21 +5,56 @@ import Table from "../../components/Table/Table";
 import { facilitatorColumns } from "../../components/Table/columns";
 import FacilitatorAdder from "../../components/Forms/FacilitatorAdder";
 
+//---------- Auth ----------//
+import { useAuth0 } from "@auth0/auth0-react";
+
 const Facilitators = () => {
   const [data, setData] = useState(null);
   const [toggleComposer, setToggleComposer] = useState(false);
 
+  //---------- Auth ----------//
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently,
+    loginWithRedirect,
+  } = useAuth0();
+  const [accessToken, setAccessToken] = useState("");
+
+  useEffect(() => {
+    console.log("isLoading: ", isLoading);
+    if (!isLoading) {
+      if (isAuthenticated) {
+        getAccessTokenSilently({
+          audience: "https://friendzone",
+        }).then((token) => {
+          console.log("Token: ", token);
+          setAccessToken(token);
+        });
+      } else {
+        loginWithRedirect();
+      }
+    }
+  }, [isLoading]);
+
   useEffect(() => {
     const getTableData = async () => {
       const tableData = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/facilitators`
+        `${process.env.REACT_APP_BACKEND_URL}/facilitators`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       setData(tableData.data.data);
     };
+    if (accessToken) {
+      getTableData();
+    }
 
-    getTableData();
     // eslint-disable-next-line
-  }, []);
+  }, [accessToken]);
 
   const handleToggle = () => {
     setToggleComposer((prev) => !prev);
@@ -28,7 +63,11 @@ const Facilitators = () => {
   return (
     <div className="contents">
       {toggleComposer && (
-        <FacilitatorAdder handleToggle={handleToggle} setData={setData} />
+        <FacilitatorAdder
+          handleToggle={handleToggle}
+          setData={setData}
+          accessToken={accessToken}
+        />
       )}
       <NavBar />
       <div className="header">
