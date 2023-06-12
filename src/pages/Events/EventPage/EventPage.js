@@ -15,10 +15,18 @@ import ParticipantsGroups from "../../../components/EventPage/ParticipantsGroups
 import axios from "axios";
 import "./EventPage.css";
 
+//---------- Auth ----------//
+import { useAuth0 } from "@auth0/auth0-react";
+
 //------------------------------//
 
 const EventPage = () => {
   const navigate = useNavigate();
+
+  //---------- Auth ----------//
+  const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
+    useAuth0;
+  const [accessToken, setAccessToken] = useState("");
 
   //---------- Data ----------//
 
@@ -35,10 +43,27 @@ const EventPage = () => {
 
   //------------------------------//
 
+  /*
+  useEffect(() => {
+    if (isAuthenticated) {
+      let token = getAccessTokenSilently({
+        audience: "https://friendzone",
+      });
+      setAccessToken(token);
+    } else {
+      loginWithRedirect();
+    }
+  }, []);*/
+
   useEffect(() => {
     const getTableData = async () => {
       const rawData = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/participants`
+        `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/participants`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       const tableData = await rawData.data.data.map((raw) => ({
         ...raw.participant,
@@ -51,7 +76,12 @@ const EventPage = () => {
     };
     const getEventData = async () => {
       const event = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}`
+        `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       setEventData(event.data.event);
     };
