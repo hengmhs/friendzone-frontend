@@ -40,6 +40,7 @@ const Table = ({
   const [columnsState, setColumnsState] = useState([]);
 
   const handleChange = async (e, egpId, participantId, columnName) => {
+    // Find out which value is being updated
     let updatedId;
     if (options === "status") {
       updatedId = "statusId";
@@ -50,6 +51,9 @@ const Table = ({
         updatedId = "groupId";
       }
     }
+
+    // If its status or attendance change, update immediately,
+    // else hold group edits until you hit save.
     if (
       options === "status" ||
       (options === "attendance" && columnName === "Attended")
@@ -62,6 +66,7 @@ const Table = ({
       setEditsButton(true);
     }
 
+    // Update state
     setTableData((prevData) => {
       const data = [...prevData];
       const editedIndex = data.findIndex(
@@ -81,15 +86,18 @@ const Table = ({
   };
 
   const handleFacilChange = async (e, content) => {
-    const tempData = [...groupData];
-    const targetIndex = tempData.findIndex(
-      (data) => Number(data.name) === content.groupId
+    const dataCopy = [...groupData];
+    // Find group that's being targeted
+    const targetIndex = dataCopy.findIndex(
+      (data) => data.id === content.groupId
     );
-    tempData[targetIndex].facilitatorId = e.value;
+    // Update facilitatorId of target group
+    dataCopy[targetIndex].facilitatorId = e.value;
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}`,
-      { groupArray: tempData }
+      { groupArray: dataCopy }
     );
+    // Update state
     setGroupData(response.data.data);
   };
 
@@ -123,7 +131,7 @@ const Table = ({
       ]);
     } else if (options === "attendance") {
       // Get group options based on no of groups
-      const groups = groupOptions(groupData.length);
+      const groups = groupOptions(groupData);
       const facils = facilOptions(facilData);
       setColumnsState([
         {
@@ -147,12 +155,14 @@ const Table = ({
                     )
                   }
                   value={groups.find(
-                    (item) => item.value === String(row.original.groupId)
+                    (item) => item.value === row.original.groupId
                   )}
                 />
               );
             } else {
-              return <h5>Group {row.original.groupId}</h5>;
+              return (
+                <h5>Group {row.original.groupId - groupData[0].id + 1}</h5>
+              );
             }
           },
         },

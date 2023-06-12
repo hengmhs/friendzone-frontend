@@ -45,11 +45,12 @@ const ParticipantsGroups = ({
       );
       return {
         name: facilData[index].name,
-        groupId: Number(group.name),
+        groupId: group.id,
       };
     });
 
     setTableData(() => {
+      // console.log(filteredData);
       const sortedData = [...filteredData, ...facilGroups];
       sortedData.sort((a, b) => {
         if (a.groupId === b.groupId) {
@@ -99,6 +100,7 @@ const ParticipantsGroups = ({
   };
 
   const saveEdits = async (filteredData) => {
+    console.log(filteredData);
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/bulk/participants`,
       {
@@ -126,7 +128,7 @@ const ParticipantsGroups = ({
             <h5>Delete</h5>
           </button>
           <button
-            onClick={() => createGroupings(filteredData, groupData.length)}
+            onClick={() => createGroupings(filteredData, groupData)}
             id="participants"
           >
             <h5>Generate</h5>

@@ -1,4 +1,10 @@
-const generateGroupings = (confirmedParticipants, numGroups) => {
+const generateGroupings = (confirmedParticipants, groupData) => {
+  const numGroups = groupData.length;
+  const groupIds = [];
+  groupData.forEach((group) => {
+    groupIds.push(group.id);
+  });
+
   const sortByAge = (participants) => {
     return participants.sort((obj1, obj2) => {
       return obj2.year - obj1.year;
@@ -38,14 +44,14 @@ const generateGroupings = (confirmedParticipants, numGroups) => {
   const minorityPerGroup = Math.floor(minority.length / numGroups);
 
   // for testing
-  console.log("Number of people: ", confirmedParticipants.length);
-  console.log("Number of groups: ", numGroups);
-  console.log("Group Size: ", groupSize);
-  console.log("Number of minority: ", minority.length);
-  console.log("Remaining minority after equal division: ", remainderMinority);
-  console.log("Number of majority: ", majority.length);
-  console.log("Remaining people after equal division: ", remainderPeople);
-  console.log("Minimum minority per group: ", minorityPerGroup);
+  // console.log("Number of people: ", confirmedParticipants.length);
+  // console.log("Number of groups: ", numGroups);
+  // console.log("Group Size: ", groupSize);
+  // console.log("Number of minority: ", minority.length);
+  // console.log("Remaining minority after equal division: ", remainderMinority);
+  // console.log("Number of majority: ", majority.length);
+  // console.log("Remaining people after equal division: ", remainderPeople);
+  // console.log("Minimum minority per group: ", minorityPerGroup);
   //
 
   let minorityIndex = 0;
@@ -56,7 +62,9 @@ const generateGroupings = (confirmedParticipants, numGroups) => {
   let totalMajority = 0;
   //
 
-  for (let groupId = 1; groupId <= numGroups; groupId++) {
+  for (let i = 0; i < numGroups; i++) {
+    const groupId = groupIds[i];
+
     let currentGroupSize = 0;
 
     // for testing
@@ -70,7 +78,7 @@ const generateGroupings = (confirmedParticipants, numGroups) => {
       minority[minorityIndex].groupId = groupId;
 
       // for testing
-      console.log(minority[minorityIndex]);
+      // console.log(minority[minorityIndex]);
       totalMinority += 1;
       //
 
@@ -83,7 +91,7 @@ const generateGroupings = (confirmedParticipants, numGroups) => {
       minority[minorityIndex].groupId = groupId;
 
       // for testing
-      console.log(minority[minorityIndex]);
+      // console.log(minority[minorityIndex]);
       totalMinority += 1;
       //
 
@@ -96,7 +104,7 @@ const generateGroupings = (confirmedParticipants, numGroups) => {
       majority[majorityIndex].groupId = groupId;
 
       // for testing
-      console.log(majority[majorityIndex]);
+      // console.log(majority[majorityIndex]);
       totalMajority += 1;
       //
 
@@ -113,7 +121,7 @@ const generateGroupings = (confirmedParticipants, numGroups) => {
       majority[majorityIndex].groupId = groupId;
 
       // for testing
-      console.log(majority[majorityIndex]);
+      // console.log(majority[majorityIndex]);
       totalMajority += 1;
       //
 
@@ -132,6 +140,7 @@ const generateGroupings = (confirmedParticipants, numGroups) => {
     console.log("");
     //
   }
+  console.log(minority.concat(majority));
   return minority.concat(majority);
 };
 export default generateGroupings;

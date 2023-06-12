@@ -13,10 +13,10 @@ const attendanceOptions = [
   { value: false, label: "No" },
 ];
 
-const groupOptions = (noOfGroups) => {
+const groupOptions = (groupData) => {
   const options = [];
-  for (let i = 0; i < noOfGroups; i++) {
-    options.push({ value: String(i + 1), label: String(i + 1) });
+  for (let i = 0; i < groupData.length; i++) {
+    options.push({ value: groupData[i].id, label: groupData[i].name });
   }
   return options;
 };
