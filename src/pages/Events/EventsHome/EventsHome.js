@@ -14,6 +14,9 @@ import EventButton from "../../../components/Buttons/EventButton";
 import axios from "axios";
 import "./EventsHome.css";
 
+//---------- Auth ----------//
+import { useAuth0 } from "@auth0/auth0-react";
+
 //------------------------------//
 
 const EventsHome = () => {
@@ -22,15 +25,43 @@ const EventsHome = () => {
   const [toggleComposer, setToggleComposer] = useState(false);
   const [data, setData] = useState(null);
 
+  //---------- Auth ----------//
+  const {
+    isAuthenticated,
+    isLoading,
+    getAccessTokenSilently,
+    loginWithRedirect,
+  } = useAuth0();
+  const [accessToken, setAccessToken] = useState("");
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (isAuthenticated) {
+        getAccessTokenSilently({
+          audience: "https://friendzone",
+        }).then((token) => {
+          setAccessToken(token);
+        });
+      } else {
+        loginWithRedirect();
+      }
+    }
+  }, [isLoading]);
+
   useEffect(() => {
     const getTableData = async () => {
       const eventList = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/events`
+        `${process.env.REACT_APP_BACKEND_URL}/events`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       setData(eventList.data.data);
     };
     getTableData();
-  }, []);
+  }, [accessToken]);
 
   const handleClick = (e) => {
     navigate(location.pathname + "/" + e.currentTarget.id);
