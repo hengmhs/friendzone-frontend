@@ -60,7 +60,9 @@ const EventsHome = () => {
       );
       setData(eventList.data.data);
     };
-    getTableData();
+    if (accessToken) {
+      getTableData();
+    }
   }, [accessToken]);
 
   const handleClick = (e) => {

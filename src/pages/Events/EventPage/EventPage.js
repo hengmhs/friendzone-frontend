@@ -24,9 +24,30 @@ const EventPage = () => {
   const navigate = useNavigate();
 
   //---------- Auth ----------//
-  const { isAuthenticated, getAccessTokenSilently, loginWithRedirect } =
-    useAuth0;
+  const {
+    isLoading,
+    isAuthenticated,
+    getAccessTokenSilently,
+    loginWithRedirect,
+  } = useAuth0();
   const [accessToken, setAccessToken] = useState("");
+
+  useEffect(() => {
+    console.log("isLoading: ", isLoading);
+    if (!isLoading) {
+      if (isAuthenticated) {
+        getAccessTokenSilently({
+          audience: "https://friendzone",
+        }).then((token) => {
+          console.log("Token: ", token);
+          setAccessToken(token);
+        });
+      } else {
+        //loginWithRedirect();
+        console.log("isAuthenticated: false");
+      }
+    }
+  }, [isLoading]);
 
   //---------- Data ----------//
 
@@ -42,18 +63,6 @@ const EventPage = () => {
   const [tab, setTab] = useState("all");
 
   //------------------------------//
-
-  /*
-  useEffect(() => {
-    if (isAuthenticated) {
-      let token = getAccessTokenSilently({
-        audience: "https://friendzone",
-      });
-      setAccessToken(token);
-    } else {
-      loginWithRedirect();
-    }
-  }, []);*/
 
   useEffect(() => {
     const getTableData = async () => {
@@ -87,23 +96,36 @@ const EventPage = () => {
     };
     const getGroupData = async () => {
       const groups = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}`
+        `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       setGroupData(groups.data.data);
     };
     const getFacilData = async () => {
       const facilitators = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/facilitators`
+        `${process.env.REACT_APP_BACKEND_URL}/facilitators`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       setFacilData(facilitators.data.data);
     };
+    if (accessToken) {
+      console.log("getTableData");
+      getTableData();
+      getEventData();
+      getGroupData();
+      getFacilData();
+    }
 
-    getTableData();
-    getEventData();
-    getGroupData();
-    getFacilData();
     // eslint-disable-next-line
-  }, []);
+  }, [accessToken]);
 
   const handleClick = (e) => {
     if (e.currentTarget.id === "back") {
