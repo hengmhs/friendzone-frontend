@@ -35,6 +35,7 @@ const Table = ({
   groupData,
   setGroupData,
   facilData,
+  setEditsButton,
 }) => {
   const [columnsState, setColumnsState] = useState([]);
 
@@ -49,11 +50,17 @@ const Table = ({
         updatedId = "groupId";
       }
     }
-
-    await axios.put(
-      `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/participants`,
-      { participantId, [updatedId]: e.value }
-    );
+    if (
+      options === "status" ||
+      (options === "attendance" && columnName === "Attended")
+    ) {
+      await axios.put(
+        `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/participants`,
+        { participantId, [updatedId]: e.value }
+      );
+    } else {
+      setEditsButton(true);
+    }
 
     setTableData((prevData) => {
       const data = [...prevData];
@@ -66,7 +73,7 @@ const Table = ({
         if (columnName === "Attended") {
           data[editedIndex].isAttended = e.value;
         } else if (columnName === "Group") {
-          data[editedIndex].groupId = e.value;
+          data[editedIndex].groupId = Number(e.value);
         }
       }
       return data;
@@ -174,8 +181,6 @@ const Table = ({
                   )}
                 />
               );
-            } else {
-              return <h5>Facilitator:</h5>;
             }
           },
         },

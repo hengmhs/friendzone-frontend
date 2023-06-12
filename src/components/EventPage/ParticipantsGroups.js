@@ -17,7 +17,6 @@ import generateGroupings from "../../groupings/groupingFunction";
 
 const ParticipantsGroups = ({
   data,
-  setData,
   eventData,
   toggleTab,
   groupData,
@@ -27,6 +26,7 @@ const ParticipantsGroups = ({
   const { eventId } = useParams();
   const [filteredData, setFilteredData] = useState([]);
   const [tableData, setTableData] = useState([]);
+  const [editsButton, setEditsButton] = useState(false);
 
   useEffect(() => {
     const confirmedParticipants = data.filter(
@@ -82,11 +82,23 @@ const ParticipantsGroups = ({
     setGroupData((prevGroups) => [...prevGroups, ...response.data.data]);
   };
 
-  const createGroupings = (filteredData, groupData) => {
-    setFilteredData(generateGroupings(filteredData, groupData));
+  const deleteGroup = async () => {
+    const allGroups = [...groupData];
+    const deletedGroup = allGroups.pop();
+    console.log(deletedGroup);
+    setGroupData([...allGroups]);
+    const response = await axios.delete(
+      `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}/${deletedGroup.id}`
+    );
+    console.log(response);
   };
 
-  const saveGroupings = async (filteredData) => {
+  const createGroupings = (filteredData, groupData) => {
+    setFilteredData(generateGroupings(filteredData, groupData));
+    setEditsButton(true);
+  };
+
+  const saveEdits = async (filteredData) => {
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/bulk/participants`,
       {
@@ -94,6 +106,7 @@ const ParticipantsGroups = ({
       }
     );
     console.log("Posted: ", response);
+    setEditsButton(false);
   };
 
   return (
@@ -101,8 +114,16 @@ const ParticipantsGroups = ({
       <div className="header">
         {eventData && <h1>{eventData.name}</h1>}
         <div className="header-buttons">
+          <h5>
+            Grouping
+            <br />
+            Actions:
+          </h5>
           <button onClick={addGroup} id="groups">
-            <h5>Add Group</h5>
+            <h5>Add</h5>
+          </button>
+          <button onClick={deleteGroup} id="groups">
+            <h5>Delete</h5>
           </button>
           <button
             onClick={() => createGroupings(filteredData, groupData.length)}
@@ -110,9 +131,11 @@ const ParticipantsGroups = ({
           >
             <h5>Generate</h5>
           </button>
-          <button onClick={() => saveGroupings(filteredData)} id="participants">
-            <h5>Save Groupings</h5>
-          </button>
+          {editsButton && (
+            <button onClick={() => saveEdits(filteredData)} id="participants">
+              <h5>Save Edits</h5>
+            </button>
+          )}
         </div>
       </div>
       <div className="event-page-tabs">
@@ -127,12 +150,13 @@ const ParticipantsGroups = ({
         <Table
           tableColumns={groupingColumns}
           tableData={tableData}
-          setTableData={setData}
+          setTableData={setFilteredData}
           options="attendance"
           eventId={eventId}
           groupData={groupData}
           setGroupData={setGroupData}
           facilData={facilData}
+          setEditsButton={setEditsButton}
         />
       )}
     </>
