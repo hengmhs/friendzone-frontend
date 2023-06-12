@@ -12,7 +12,16 @@ const Participants = () => {
       const tableData = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/participants`
       );
-      setData(tableData.data.data);
+      const fullData = tableData.data.data.map((participant) => {
+        const fullParticipant = {
+          ...participant,
+          neighbourhood: participant.neighbourhood
+            ? participant.neighbourhood.location
+            : "Not Found",
+        };
+        return fullParticipant;
+      });
+      setData(fullData);
     };
     getTableData();
   }, []);

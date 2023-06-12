@@ -46,6 +46,7 @@ const EventPage = () => {
         statusId: raw.statusId,
         isAttended: raw.isAttended,
         groupId: raw.groupId,
+        neighbourhood: raw.neighbourhood,
       }));
       setData(tableData);
     };
