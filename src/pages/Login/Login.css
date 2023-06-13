@@ -1,0 +1,30 @@
+#login-module {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+#login-module h1 {
+  font-size: 150px;
+  font-weight: 900;
+  background: linear-gradient(to right, #ec5660, #ffc26f);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#login-module h5 {
+  font-size: 20px;
+}
+
+#login-module button {
+  width: 120px;
+  font-size: 10px;
+}
+
+#login-module button h5 {
+  font-size: 16px;
+}

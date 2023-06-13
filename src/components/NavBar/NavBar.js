@@ -1,11 +1,14 @@
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "../../components/Buttons/LogoutButton";
 import "./NavBar.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const NavBar = () => {
   const navigate = useNavigate();
   const handleNavigate = (e) => {
     navigate(`/${e.currentTarget.id}`);
   };
+  const { isAuthenticated } = useAuth0();
 
   return (
     <div id="nav">
@@ -20,6 +23,7 @@ const NavBar = () => {
         <button onClick={handleNavigate} id="facils">
           <h5>Facilitators</h5>
         </button>
+        {isAuthenticated && <LogoutButton />}
       </div>
     </div>
   );

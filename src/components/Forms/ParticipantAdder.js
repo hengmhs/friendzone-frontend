@@ -2,6 +2,7 @@ import "./Forms.css";
 import { useState } from "react";
 import { parse } from "papaparse";
 import axios from "axios";
+import Button from "../Buttons/Button";
 
 const ParticipantAdder = ({ handleToggle, eventId, accessToken }) => {
   const [csv, setCsv] = useState(null);
@@ -98,9 +99,7 @@ const ParticipantAdder = ({ handleToggle, eventId, accessToken }) => {
       <div className="forms">
         <div className="header">
           <h1>Add Participants</h1>
-          <button onClick={handleToggle} id="participants">
-            <h5>Close</h5>
-          </button>
+          <Button onClick={handleToggle} id="participants" label="Close" />
         </div>
 
         <div className="pop-up-note">

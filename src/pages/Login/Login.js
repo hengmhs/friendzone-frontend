@@ -1,21 +1,30 @@
+import { useEffect } from "react";
 import NavBar from "../../components/NavBar/NavBar";
 import LoginButton from "../../components/Buttons/LoginButton";
-import LogoutButton from "../../components/Buttons/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
+import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/events");
+    }
+    // eslint-disable-next-line
+  }, [isAuthenticated]);
 
   return (
     <div className="contents">
       <NavBar />
-      <h1>Login Page</h1>
-      <div>isLoading: {isLoading.toString()}</div>
-      <div>Authenticated Status: {isAuthenticated.toString()} </div>
-      {isAuthenticated && <div>User: {user.email} </div>}
-
-      <LoginButton />
-      <LogoutButton />
+      <div id="login-module">
+        <div className="login-header">
+          <img src="../logos/pals_logo.svg" alt="logo" />
+        </div>
+        {!isAuthenticated && <LoginButton />}
+      </div>
     </div>
   );
 };

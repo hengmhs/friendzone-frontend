@@ -3,8 +3,7 @@
   left: 0;
   top: 0;
   width: 100%;
-  background-image: url("../../../public/images/fz_gradient_main.jpg");
-  background-size: cover;
+  background: linear-gradient(to right, #ec5660, #ffc26f);
   background-color: black;
   height: 60px;
   padding: 20px;
@@ -17,10 +16,20 @@
 
 #nav-links {
   display: flex;
+  gap: 15px;
 }
 
 #nav-links button {
   color: white;
   background-color: rgba(0, 0, 0, 0);
   border: none;
+  border-radius: 0;
+  width: fit-content;
+  padding: 0 0 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0);
+}
+
+#nav-links button:hover {
+  box-shadow: none;
+  border-bottom: 1px solid white;
 }

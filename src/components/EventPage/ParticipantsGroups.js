@@ -12,6 +12,7 @@ import { groupingColumns } from "../Table/columns";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import generateGroupings from "../../groupings/groupingFunction";
+import Button from "../Buttons/Button";
 
 //------------------------------//
 
@@ -51,7 +52,6 @@ const ParticipantsGroups = ({
     });
 
     setTableData(() => {
-      // console.log(filteredData);
       const sortedData = [...filteredData, ...facilGroups];
       sortedData.sort((a, b) => {
         if (a.groupId === b.groupId) {
@@ -92,7 +92,6 @@ const ParticipantsGroups = ({
   const deleteGroup = async () => {
     const allGroups = [...groupData];
     const deletedGroup = allGroups.pop();
-    console.log(deletedGroup);
     setGroupData([...allGroups]);
     const response = await axios.delete(
       `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}/${deletedGroup.id}`,
@@ -102,7 +101,7 @@ const ParticipantsGroups = ({
         },
       }
     );
-    console.log(response);
+    console.log("Deleted: ", response);
   };
 
   const createGroupings = (filteredData, groupData) => {
@@ -111,7 +110,6 @@ const ParticipantsGroups = ({
   };
 
   const saveEdits = async (filteredData) => {
-    console.log(filteredData);
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/bulk/participants`,
       {
@@ -137,32 +135,30 @@ const ParticipantsGroups = ({
             <br />
             Actions:
           </h5>
-          <button onClick={addGroup} id="groups">
-            <h5>Add</h5>
-          </button>
-          <button onClick={deleteGroup} id="groups">
-            <h5>Delete</h5>
-          </button>
-          <button
+          <Button onClick={addGroup} id="groups" label="Add" />
+          <Button onClick={deleteGroup} id="groups" label="Delete" />
+          <Button
             onClick={() => createGroupings(filteredData, groupData)}
             id="participants"
-          >
-            <h5>Generate</h5>
-          </button>
+            label="Generate"
+          />
           {editsButton && (
-            <button onClick={() => saveEdits(filteredData)} id="participants">
-              <h5>Save Edits</h5>
-            </button>
+            <Button
+              onClick={() => saveEdits(filteredData)}
+              id="participants"
+              label="Save Edits"
+            />
           )}
         </div>
       </div>
       <div className="event-page-tabs">
-        <button onClick={toggleTab} id="all" className="inactive">
-          <h5>All Participants</h5>
-        </button>
-        <button id="groupings" className="active">
-          <h5>Groupings</h5>
-        </button>
+        <Button
+          id="all"
+          className="inactive"
+          onClick={toggleTab}
+          label="All Participants"
+        />
+        <Button id="groupings" className="active" label="Groupings" />
       </div>
       {data && (
         <Table

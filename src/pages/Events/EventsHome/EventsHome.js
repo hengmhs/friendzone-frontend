@@ -16,6 +16,7 @@ import "./EventsHome.css";
 
 //---------- Auth ----------//
 import { useAuth0 } from "@auth0/auth0-react";
+import Loading from "../../Loading/Loading";
 
 //------------------------------//
 
@@ -46,6 +47,7 @@ const EventsHome = () => {
         loginWithRedirect();
       }
     }
+    // eslint-disable-next-line
   }, [isLoading]);
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const EventsHome = () => {
   };
 
   if (!data) {
-    return <p>Loading...</p>;
+    return <Loading />;
   } else {
     const buttons = data.map((event) => (
       <EventButton onClick={handleClick} id={event.id} key={event.id}>
