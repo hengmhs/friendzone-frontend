@@ -3,6 +3,7 @@ import { useState } from "react";
 import { parse } from "papaparse";
 import axios from "axios";
 import Button from "../Buttons/Button";
+import { bearerToken } from "../../utils";
 
 const ParticipantAdder = ({ handleToggle, eventId, accessToken }) => {
   const [csv, setCsv] = useState(null);
@@ -64,11 +65,7 @@ const ParticipantAdder = ({ handleToggle, eventId, accessToken }) => {
           const response = await axios.post(
             `${process.env.REACT_APP_BACKEND_URL}/participants`,
             { eventId, participantJSON },
-            {
-              headers: {
-                Authorization: `Bearer ${accessToken}`,
-              },
-            }
+            bearerToken(accessToken)
           );
           console.log(response);
           console.log("Posted to backend");

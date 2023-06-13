@@ -6,6 +6,7 @@ import axios from "axios";
 
 //---------- Auth ----------//
 import { useAuth0 } from "@auth0/auth0-react";
+import { bearerToken } from "../../utils";
 
 const Participants = () => {
   const [data, setData] = useState(null);
@@ -26,24 +27,20 @@ const Participants = () => {
         getAccessTokenSilently({
           audience: "https://friendzone",
         }).then((token) => {
-          console.log("Token: ", token);
           setAccessToken(token);
         });
       } else {
         loginWithRedirect();
       }
     }
+    // eslint-disable-next-line
   }, [isLoading]);
 
   useEffect(() => {
     const getTableData = async () => {
       const tableData = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/participants`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
       const fullData = tableData.data.data.map((participant) => {
         const fullParticipant = {

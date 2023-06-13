@@ -10,15 +10,18 @@
 table {
   border-collapse: collapse;
   min-width: 100%;
-}
-
-tr {
-  border-bottom: 1px solid rgb(185, 185, 185);
+  position: relative;
 }
 
 th,
 td {
   padding: 5px 10px;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 th {
@@ -33,6 +36,10 @@ th {
 td {
   font-weight: 500;
   font-size: 16px;
+}
+
+tr {
+  border-bottom: 1px solid rgb(185, 185, 185);
 }
 
 .select-status {

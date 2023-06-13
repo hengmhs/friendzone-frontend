@@ -2,6 +2,7 @@ import "./Forms.css";
 import { useState } from "react";
 import axios from "axios";
 import Button from "../Buttons/Button";
+import { bearerToken } from "../../utils";
 
 const FacilitatorAdder = ({ handleToggle, setData, accessToken }) => {
   const [name, setName] = useState("");
@@ -12,11 +13,7 @@ const FacilitatorAdder = ({ handleToggle, setData, accessToken }) => {
       const facilitator = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/facilitators`,
         { name },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
       console.log("Successfully added: ", facilitator);
     } catch (err) {

@@ -35,6 +35,7 @@ const Facilitators = () => {
         loginWithRedirect();
       }
     }
+    // eslint-disable-next-line
   }, [isLoading]);
 
   useEffect(() => {

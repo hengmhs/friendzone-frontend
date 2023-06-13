@@ -25,6 +25,7 @@ import {
 
 import "./Table.css";
 import axios from "axios";
+import { bearerToken } from "../../utils";
 
 const Table = ({
   tableColumns,
@@ -46,31 +47,21 @@ const Table = ({
     if (options === "status") {
       updatedId = "statusId";
     } else if (options === "attendance") {
-      if (columnName === "Attended") {
-        updatedId = "isAttended";
-      } else if (columnName === "Group") {
-        updatedId = "groupId";
-      }
+      updatedId = columnName;
     }
-
     // If its status or attendance change, update immediately,
     // else hold group edits until you hit save.
     if (
       options === "status" ||
-      (options === "attendance" && columnName === "Attended")
+      (options === "attendance" && columnName === "isAttended")
     ) {
-      console.log("accessToken: ", accessToken);
       await axios.put(
         `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/participants`,
         {
           participantId,
           [updatedId]: e.value,
         },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
     } else {
       setEditsButton(true);
@@ -79,15 +70,16 @@ const Table = ({
     // Update state
     setTableData((prevData) => {
       const data = [...prevData];
+      console.log(data);
       const editedIndex = data.findIndex(
         (participant) => participant.egpId === egpId
       );
       if (options === "status") {
         data[editedIndex].statusId = e.value;
       } else if (options === "attendance") {
-        if (columnName === "Attended") {
+        if (columnName === "isAttended") {
           data[editedIndex].isAttended = e.value;
-        } else if (columnName === "Group") {
+        } else if (columnName === "groupId") {
           data[editedIndex].groupId = Number(e.value);
         }
       }
@@ -106,11 +98,7 @@ const Table = ({
     const response = await axios.put(
       `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}`,
       { groupArray: dataCopy },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      bearerToken(accessToken)
     );
     // Update state
     setGroupData(response.data.data);
@@ -171,7 +159,7 @@ const Table = ({
                       e,
                       row.original.egpId,
                       row.original.id,
-                      column.id
+                      "groupId"
                     )
                   }
                   value={group}
@@ -200,7 +188,7 @@ const Table = ({
                       e,
                       row.original.egpId,
                       row.original.id,
-                      column.id
+                      "isAttended"
                     )
                   }
                   value={attendanceOptions.find(
@@ -296,15 +284,23 @@ const Table = ({
                 let rowColor = "white";
                 let textColor = "black";
                 if (options === "status") {
-                  if (participant.statusId === 5) {
-                    rowColor = "#B3DFA1";
+                  switch (participant.statusId) {
+                    case 5:
+                      rowColor = "#B3DFA1";
+                      break;
+                    case 4:
+                    case 3:
+                      rowColor = "#FF9696";
+                      break;
+                    default:
+                      break;
                   }
                 } else if (options === "attendance") {
                   if (!participant.mobile) {
                     rowColor = "rgb(160,160,160)";
                     textColor = "white";
                   } else if (participant.groupId % 2) {
-                    rowColor = "rgb(225,225,225)";
+                    rowColor = "white";
                   }
                 }
 
