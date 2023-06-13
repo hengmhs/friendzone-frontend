@@ -3,7 +3,7 @@ import { useState } from "react";
 import "axios";
 import axios from "axios";
 
-const FacilitatorAdder = ({ handleToggle, setData }) => {
+const FacilitatorAdder = ({ handleToggle, setData, accessToken }) => {
   const [name, setName] = useState("");
 
   const handleSubmit = async (e) => {
@@ -11,7 +11,12 @@ const FacilitatorAdder = ({ handleToggle, setData }) => {
     try {
       const facilitator = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/facilitators`,
-        { name }
+        { name },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
       );
       console.log("Successfully added: ", facilitator);
     } catch (err) {

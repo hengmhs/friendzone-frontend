@@ -18,6 +18,7 @@ const ParticipantsAll = ({
   eventData,
   handleToggle,
   toggleTab,
+  accessToken,
 }) => {
   const { eventId } = useParams();
 
@@ -46,6 +47,7 @@ const ParticipantsAll = ({
           setTableData={setData}
           options="status"
           eventId={eventId}
+          accessToken={accessToken}
         />
       )}
     </>
