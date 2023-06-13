@@ -3,8 +3,13 @@
   text-align: left;
   border: none;
   border-radius: 10px;
-  background-color: rgb(113, 113, 113);
+  background: linear-gradient(45deg, #db448a, #978dff);
   display: flex;
   justify-content: space-between;
   color: white;
+  transition: 0.2s;
+}
+
+.event-home-button:hover {
+  background: white;
 }

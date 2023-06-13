@@ -1,7 +1,7 @@
 import "./Forms.css";
 import { useState } from "react";
-import "axios";
 import axios from "axios";
+import Button from "../Buttons/Button";
 
 const FacilitatorAdder = ({ handleToggle, setData }) => {
   const [name, setName] = useState("");
@@ -31,9 +31,7 @@ const FacilitatorAdder = ({ handleToggle, setData }) => {
       <div className="forms">
         <div className="header">
           <h1>Add Facilitator</h1>
-          <button onClick={handleToggle}>
-            <h5>Close</h5>
-          </button>
+          <Button onClick={handleToggle} label="Close" />
         </div>
 
         <form>
@@ -44,7 +42,7 @@ const FacilitatorAdder = ({ handleToggle, setData }) => {
             placeholder="Input Facilitator's Name"
             value={name}
           />
-          <button onClick={handleSubmit}>Add</button>
+          <Button onClick={handleSubmit} label="Add" />
         </form>
       </div>
     </div>

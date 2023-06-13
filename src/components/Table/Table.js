@@ -108,6 +108,7 @@ const Table = ({
       setColumnsState([
         {
           header: "Status",
+          accessorKey: "statusId",
           cell: ({ row }) => {
             return (
               <Select
@@ -121,7 +122,7 @@ const Table = ({
                   handleChange(e, row.original.egpId, row.original.id)
                 }
                 value={statusOptions.find(
-                  (item) => item.value === String(row.original.statusId)
+                  (item) => item.value === row.original.statusId
                 )}
               />
             );
@@ -136,7 +137,11 @@ const Table = ({
       setColumnsState([
         {
           header: "Group",
+          accessorKey: "groupId",
           cell: ({ row, column }) => {
+            const group = groups.find(
+              (item) => item.value === row.original.groupId
+            );
             if (row.original.mobile) {
               return (
                 <Select
@@ -154,20 +159,17 @@ const Table = ({
                       column.id
                     )
                   }
-                  value={groups.find(
-                    (item) => item.value === row.original.groupId
-                  )}
+                  value={group}
                 />
               );
             } else {
-              return (
-                <h5>Group {row.original.groupId - groupData[0].id + 1}</h5>
-              );
+              return <h5>Group {group.label}</h5>;
             }
           },
         },
         {
           header: "Attended",
+          accessorKey: "isAttended",
           cell: ({ row, column }) => {
             if (row.original.mobile) {
               return (
@@ -197,7 +199,7 @@ const Table = ({
         {
           header: "Name",
           accessorKey: "name",
-          cell: ({ row, column }) => {
+          cell: ({ row }) => {
             if (row.original.mobile) {
               return row.original.name;
             } else {
@@ -252,16 +254,18 @@ const Table = ({
                         onClick: header.column.getToggleSortingHandler(),
                       }}
                     >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      <h5>
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </h5>
                       {{
                         asc: " ⬆",
                         desc: " ⬇",
                       }[header.column.getIsSorted()] ?? null}
                     </div>
-                  )}{" "}
+                  )}
                 </th>
               ))}
             </tr>
