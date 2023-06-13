@@ -45,7 +45,16 @@ const Participants = () => {
           },
         }
       );
-      setData(tableData.data.data);
+      const fullData = tableData.data.data.map((participant) => {
+        const fullParticipant = {
+          ...participant,
+          neighbourhood: participant.neighbourhood
+            ? participant.neighbourhood.location
+            : "Not Found",
+        };
+        return fullParticipant;
+      });
+      setData(fullData);
     };
     if (accessToken) {
       getTableData();
