@@ -14,6 +14,7 @@ import axios from "axios";
 import generateGroupings from "../../groupings/groupingFunction";
 import Button from "../Buttons/Button";
 import { bearerToken } from "../../utils";
+import CsvDownload from "react-json-to-csv";
 
 //------------------------------//
 
@@ -98,6 +99,7 @@ const ParticipantsGroups = ({
   };
 
   const createGroupings = (filteredData, groupData) => {
+    console.log(filteredData);
     setFilteredData(generateGroupings(filteredData, groupData));
     setEditsButton(true);
   };
@@ -113,6 +115,17 @@ const ParticipantsGroups = ({
     console.log("Posted: ", response);
     setEditsButton(false);
   };
+
+  /*
+  const downloadFile = () => {
+    const url = window.URL.createObjectURL(new Blob([filteredData]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", "groups.csv");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };*/
 
   return (
     <>
@@ -131,6 +144,9 @@ const ParticipantsGroups = ({
             id="participants"
             label="Generate"
           />
+          <CsvDownload id="groups" data={filteredData}>
+            Download CSV
+          </CsvDownload>
           {editsButton && (
             <Button
               onClick={() => saveEdits(filteredData)}
