@@ -15,6 +15,7 @@ import generateGroupings from "../../groupings/groupingFunction";
 import Button from "../Buttons/Button";
 import { bearerToken } from "../../utils";
 import CsvDownload from "react-json-to-csv";
+import "./ParticipantGroups.css";
 
 //------------------------------//
 
@@ -116,17 +117,6 @@ const ParticipantsGroups = ({
     setEditsButton(false);
   };
 
-  /*
-  const downloadFile = () => {
-    const url = window.URL.createObjectURL(new Blob([filteredData]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "groups.csv");
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-  };*/
-
   return (
     <>
       <div className="header">
@@ -144,8 +134,8 @@ const ParticipantsGroups = ({
             id="participants"
             label="Generate"
           />
-          <CsvDownload id="groups" data={filteredData}>
-            Download CSV
+          <CsvDownload className="csv-btn" data={filteredData}>
+            Download
           </CsvDownload>
           {editsButton && (
             <Button
