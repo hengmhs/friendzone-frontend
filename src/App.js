@@ -16,7 +16,6 @@ import Login from "./pages/Login/Login";
 import "./App.css";
 
 //------------------------------//
-// <Route path="/" element={<Navigate to="/events" />} />
 
 const App = () => {
   return (

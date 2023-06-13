@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import generateGroupings from "../../groupings/groupingFunction";
 import Button from "../Buttons/Button";
+import { bearerToken } from "../../utils";
 
 //------------------------------//
 
@@ -80,11 +81,7 @@ const ParticipantsGroups = ({
           },
         ],
       },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      bearerToken(accessToken)
     );
     setGroupData((prevGroups) => [...prevGroups, ...response.data.data]);
   };
@@ -95,11 +92,7 @@ const ParticipantsGroups = ({
     setGroupData([...allGroups]);
     const response = await axios.delete(
       `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}/${deletedGroup.id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      bearerToken(accessToken)
     );
     console.log("Deleted: ", response);
   };
@@ -115,11 +108,7 @@ const ParticipantsGroups = ({
       {
         participantArray: filteredData,
       },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
+      bearerToken(accessToken)
     );
     console.log("Posted: ", response);
     setEditsButton(false);

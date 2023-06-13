@@ -3,6 +3,7 @@ import { useState } from "react";
 import { parse } from "papaparse";
 import "axios";
 import axios from "axios";
+import { bearerToken } from "../../utils";
 
 const EventComposer = ({ handleToggle, accessToken }) => {
   const [title, setTitle] = useState("");
@@ -27,11 +28,7 @@ const EventComposer = ({ handleToggle, accessToken }) => {
       const event = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/events`,
         eventJSON,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
       console.log("posted event: ", event);
       console.log("eventJSON posted to backend");
@@ -90,11 +87,7 @@ const EventComposer = ({ handleToggle, accessToken }) => {
             const response = await axios.post(
               `${process.env.REACT_APP_BACKEND_URL}/participants`,
               { eventId: event.data.content.id, participantJSON },
-              {
-                headers: {
-                  Authorization: `Bearer ${accessToken}`,
-                },
-              }
+              bearerToken(accessToken)
             );
             console.log(response);
             console.log("Posted to backend");
@@ -129,7 +122,6 @@ const EventComposer = ({ handleToggle, accessToken }) => {
   };
 
   const handleChange = (e) => {
-    console.log(e.currentTarget.id);
     switch (e.currentTarget.id) {
       case "title":
         setTitle(e.currentTarget.value);

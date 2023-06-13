@@ -17,6 +17,7 @@ import "./EventPage.css";
 
 //---------- Auth ----------//
 import { useAuth0 } from "@auth0/auth0-react";
+import { bearerToken } from "../../../utils";
 
 //------------------------------//
 
@@ -33,20 +34,18 @@ const EventPage = () => {
   const [accessToken, setAccessToken] = useState("");
 
   useEffect(() => {
-    console.log("isLoading: ", isLoading);
     if (!isLoading) {
       if (isAuthenticated) {
         getAccessTokenSilently({
           audience: "https://friendzone",
         }).then((token) => {
-          console.log("Token: ", token);
           setAccessToken(token);
         });
       } else {
-        //loginWithRedirect();
-        console.log("isAuthenticated: false");
+        loginWithRedirect();
       }
     }
+    // eslint-disable-next-line
   }, [isLoading]);
 
   //---------- Data ----------//
@@ -68,13 +67,9 @@ const EventPage = () => {
     const getTableData = async () => {
       const rawData = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}/participants`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
-      const tableData = await rawData.data.data.map((raw) => ({
+      const tableData = rawData.data.data.map((raw) => ({
         ...raw.participant,
         egpId: raw.id,
         statusId: raw.statusId,
@@ -87,38 +82,25 @@ const EventPage = () => {
     const getEventData = async () => {
       const event = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/events/${eventId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
       setEventData(event.data.event);
     };
     const getGroupData = async () => {
       const groups = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/groups/${eventId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
       setGroupData(groups.data.data);
     };
     const getFacilData = async () => {
       const facilitators = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/facilitators`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
       setFacilData(facilitators.data.data);
     };
     if (accessToken) {
-      console.log("getTableData");
       getTableData();
       getEventData();
       getGroupData();

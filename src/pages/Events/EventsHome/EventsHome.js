@@ -8,6 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import NavBar from "../../../components/NavBar/NavBar";
 import EventComposer from "../../../components/Forms/EventComposer";
 import EventButton from "../../../components/Buttons/EventButton";
+import Loading from "../../Loading/Loading";
 
 //---------- Others ----------//
 
@@ -16,7 +17,7 @@ import "./EventsHome.css";
 
 //---------- Auth ----------//
 import { useAuth0 } from "@auth0/auth0-react";
-import Loading from "../../Loading/Loading";
+import { bearerToken } from "../../../utils";
 
 //------------------------------//
 
@@ -54,11 +55,7 @@ const EventsHome = () => {
     const getTableData = async () => {
       const eventList = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/events`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
+        bearerToken(accessToken)
       );
       setData(eventList.data.data);
     };
