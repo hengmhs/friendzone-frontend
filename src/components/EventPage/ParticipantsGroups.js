@@ -117,6 +117,21 @@ const ParticipantsGroups = ({
     setEditsButton(false);
   };
 
+  const addGroupName = (data) => {
+    const groupNames = [];
+    for (const participant of data) {
+      if (!groupNames.includes(participant.groupId)) {
+        participant.groupName = groupNames.push(participant.groupId);
+      } else {
+        participant.groupName =
+          groupNames.findIndex((element) => element === participant.groupId) +
+          1;
+      }
+    }
+    console.log(data);
+    return data;
+  };
+
   return (
     <>
       <div className="header">
@@ -134,7 +149,7 @@ const ParticipantsGroups = ({
             id="participants"
             label="Generate"
           />
-          <CsvDownload className="csv-btn" data={filteredData}>
+          <CsvDownload className="csv-btn" data={addGroupName(filteredData)}>
             Download
           </CsvDownload>
           {editsButton && (
