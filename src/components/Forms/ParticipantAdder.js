@@ -1,83 +1,100 @@
-import "./Forms.css";
+//----------- React -----------//
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+//---------- Components ----------//
+
+import Button from "../Buttons/Button";
+
+//---------- Misc ----------//
+
+import { bearerToken } from "../../utils";
 import { parse } from "papaparse";
 import axios from "axios";
-import Button from "../Buttons/Button";
-import { bearerToken } from "../../utils";
+import "./Forms.css";
 
 const ParticipantAdder = ({ handleToggle, eventId, accessToken }) => {
   const [csv, setCsv] = useState(null);
+  const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      parse(csv, {
-        header: true,
-        delimiter: ",",
-        complete: async (results) => {
-          // get an array of participant data in JSON format
-          const participantJSON = results.data.map((participant) => {
-            let {
-              "Preferred Name": name,
-              "Mobile Number (e.g. 91234567)": mobile,
-              "Postal Code (e.g. 123456)": postalCode,
-              "Year of Birth": year,
-              "Marital Status": maritalStatus,
-              Sex: isMale,
-              Nationality: nationality,
-              Race: race,
-            } = participant;
-            // convert 'Male' to true and 'Female' to false
-            if (isMale === "Male") {
-              isMale = true;
-            } else if (isMale === "Female") {
-              isMale = false;
-            } else {
-              console.log(
-                "Error: Participant isMale variable is neither Male nor Female"
-              );
-            }
-            // remove spaces betweeen numbers such as 8766 9043
-            mobile = mobile.replaceAll(" ", "");
-            // remove elements before mobile number
-            if (mobile.length > 8) {
-              // remove +65
-              if (mobile[0] === "+") {
-                mobile = mobile.slice(3);
+    if (csv) {
+      setError(false);
+      try {
+        parse(csv, {
+          header: true,
+          delimiter: ",",
+          complete: async (results) => {
+            // get an array of participant data in JSON format
+            const participantJSON = results.data.map((participant) => {
+              let {
+                "Preferred Name": name,
+                "Mobile Number (e.g. 91234567)": mobile,
+                "Postal Code (e.g. 123456)": postalCode,
+                "Year of Birth": year,
+                "Marital Status": maritalStatus,
+                Sex: isMale,
+                Nationality: nationality,
+                Race: race,
+              } = participant;
+              // convert 'Male' to true and 'Female' to false
+              if (isMale === "Male") {
+                isMale = true;
+              } else if (isMale === "Female") {
+                isMale = false;
               } else {
-                // remove 65
-                mobile = mobile.slice(2);
+                console.log(
+                  "Error: Participant isMale variable is neither Male nor Female"
+                );
               }
-            }
-            const cleanedParticipant = {
-              name,
-              mobile,
-              postalCode,
-              year,
-              maritalStatus,
-              isMale,
-              nationality,
-              race,
-            };
-            return cleanedParticipant;
-          });
+              // remove spaces betweeen numbers such as 8766 9043
+              mobile = mobile.replaceAll(" ", "");
+              // remove elements before mobile number
+              if (mobile.length > 8) {
+                // remove +65
+                if (mobile[0] === "+") {
+                  mobile = mobile.slice(3);
+                } else {
+                  // remove 65
+                  mobile = mobile.slice(2);
+                }
+              }
+              const cleanedParticipant = {
+                name,
+                mobile,
+                postalCode,
+                year,
+                maritalStatus,
+                isMale,
+                nationality,
+                race,
+              };
+              return cleanedParticipant;
+            });
 
-          const response = await axios.post(
-            `${process.env.REACT_APP_BACKEND_URL}/participants`,
-            { eventId, participantJSON },
-            bearerToken(accessToken)
-          );
-          console.log(response);
-          console.log("Posted to backend");
-        },
-      });
-    } catch {
-      console.log(
-        "There is an error with parsing the CSV file. Check if the file type you have uploaded is a CSV."
-      );
+            const response = await axios.post(
+              `${process.env.REACT_APP_BACKEND_URL}/participants`,
+              { eventId, participantJSON },
+              bearerToken(accessToken)
+            );
+            console.log(response);
+            console.log("Posted to backend");
+          },
+        });
+      } catch {
+        console.log(
+          "There is an error with parsing the CSV file. Check if the file type you have uploaded is a CSV."
+        );
+      }
+      console.log(csv);
+      setCsv(null);
+      navigate(0);
+    } else {
+      setError(true);
     }
-    console.log(csv);
-    setCsv(null);
   };
 
   const handleChange = (e) => {
@@ -116,7 +133,10 @@ const ParticipantAdder = ({ handleToggle, eventId, accessToken }) => {
               onChange={handleChange}
             />
           </div>
-          <button onClick={handleSubmit}>Add</button>
+          {error && <p className="err-msg">Please select file to upload!</p>}
+          <button onClick={handleSubmit} id="participants">
+            Add
+          </button>
         </form>
       </div>
     </div>

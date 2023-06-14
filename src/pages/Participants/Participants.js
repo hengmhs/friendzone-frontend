@@ -21,7 +21,6 @@ const Participants = () => {
   const [accessToken, setAccessToken] = useState("");
 
   useEffect(() => {
-    console.log("isLoading: ", isLoading);
     if (!isLoading) {
       if (isAuthenticated) {
         getAccessTokenSilently({
