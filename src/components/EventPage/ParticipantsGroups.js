@@ -128,7 +128,6 @@ const ParticipantsGroups = ({
           1;
       }
     }
-    console.log(data);
     return data;
   };
 
@@ -149,13 +148,10 @@ const ParticipantsGroups = ({
             id="participants"
             label="Generate"
           />
-          <CsvDownload className="csv-btn" data={addGroupName(filteredData)}>
-            Download
-          </CsvDownload>
           {editsButton && (
             <Button
               onClick={() => saveEdits(filteredData)}
-              id="participants"
+              className="save-btn"
               label="Save Edits"
             />
           )}
@@ -184,6 +180,9 @@ const ParticipantsGroups = ({
           accessToken={accessToken}
         />
       )}
+      <CsvDownload className="csv-btn" data={addGroupName(filteredData)}>
+        <h5>Download Groupings</h5>
+      </CsvDownload>
     </>
   );
 };

@@ -22,13 +22,11 @@ const Facilitators = () => {
   const [accessToken, setAccessToken] = useState("");
 
   useEffect(() => {
-    console.log("isLoading: ", isLoading);
     if (!isLoading) {
       if (isAuthenticated) {
         getAccessTokenSilently({
           audience: "https://friendzone",
         }).then((token) => {
-          console.log("Token: ", token);
           setAccessToken(token);
         });
       } else {

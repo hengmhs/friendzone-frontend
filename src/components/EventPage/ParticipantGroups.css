@@ -1,6 +1,10 @@
 .csv-btn {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: bold;
+  width: fit-content;
+  border: 1px solid black;
+  background-color: white;
+  color: black;
+}
+
+.save-btn {
+  background-color: #2a85ff;
 }

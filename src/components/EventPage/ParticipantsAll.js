@@ -22,7 +22,6 @@ const ParticipantsAll = ({
   accessToken,
 }) => {
   const { eventId } = useParams();
-
   return (
     <>
       <div className="header">

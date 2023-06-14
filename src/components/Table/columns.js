@@ -11,19 +11,13 @@ const allColumns = [
   { header: "Mobile", accessorKey: "mobile" },
   {
     header: "Sex",
-    accessorKey: "isMale",
+    accessorFn: (row) => (row.isMale ? "M" : "F"),
     sortType: "basic",
-    cell: (content) => {
-      return content.value ? "M" : "F";
-    },
   },
   {
     header: "First Timer",
-    accessorKey: "isFirstTime",
+    accessorFn: (row) => (row.isFirstTime ? "Yes" : "No"),
     sortType: "basic",
-    cell: (content) => {
-      return content.value ? "Yes" : "No";
-    },
   },
   { header: "Nationality", accessorKey: "nationality" },
   { header: "Race", accessorKey: "race" },
@@ -61,6 +55,7 @@ const groupingColumns = [
     sortType: "basic",
     cell: ({ row }) => {
       if (row.original.mobile) {
+        console.log(row);
         return row.original.isMale ? "M" : "F";
       } else {
         return <p></p>;

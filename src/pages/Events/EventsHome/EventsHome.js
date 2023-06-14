@@ -87,6 +87,7 @@ const EventsHome = () => {
           <EventComposer
             handleToggle={handleToggle}
             accessToken={accessToken}
+            setData={setData}
           />
         )}
         <NavBar />

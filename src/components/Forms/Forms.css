@@ -98,3 +98,7 @@
 .facil {
   flex: 3;
 }
+
+.err-msg {
+  color: red;
+}
