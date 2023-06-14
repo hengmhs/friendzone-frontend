@@ -96,7 +96,7 @@ const EventComposer = ({ handleToggle, accessToken, setData }) => {
 
               const response = await axios.post(
                 `${process.env.REACT_APP_BACKEND_URL}/participants`,
-                { eventId: event.data.content.id, participantJSON },
+                { eventId: event.id, participantJSON },
                 bearerToken(accessToken)
               );
               console.log(response);
