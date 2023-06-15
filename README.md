@@ -1,5 +1,12 @@
 # Rocket Academy Coding Bootcamp: Project 3 Frontend
 
+## Participant Automated Listing System (P.A.L.S)
+
+For Project 3, we built software for [Friendzone](https://friendzone.sg/) to automatically clean mobile numbers, identify past participants and generate participant groupings for their events. 
+
+## Collaborators
+[Mark Chan](https://github.com/markcwy-ra) [Sean Heng](https://github.com/hengmhs)
+
 ## Available Scripts
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). In the project directory, you can run:
