@@ -22,8 +22,9 @@ You may also see any lint errors in the console.
 ### .env
 You also need to provide a .env file with the following configurations:
 
-  REACT_APP_AUTH_DOMAIN="Put your Auth0 domain here"
-  REACT_APP_AUTH_CLIENT_ID="Put yout Auth0 client id here"
-  REACT_APP_AUTH_AUDIENCE="Put your Auth0 audience here"
-  REACT_APP_BACKEND_URL=http://localhost:8000
-
+```
+REACT_APP_AUTH_DOMAIN="Put your Auth0 domain here"
+REACT_APP_AUTH_CLIENT_ID="Put yout Auth0 client id here"
+REACT_APP_AUTH_AUDIENCE="Put your Auth0 audience here"
+REACT_APP_BACKEND_URL=http://localhost:8000
+```
